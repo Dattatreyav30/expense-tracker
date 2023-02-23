@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Expense tracker</title>
+</head>
+<body>
+    <form action="">
+        <label for="expense_amount">choose expense amount</label>
+        <input type="text" name="expense_amount" id="expense_amount">
+        <label for="description">choose description</label>
+        <input type="text" name="description" id="description">
+        <label for="category">choose category</label>
+        <select name="category" id="category">
+            <option value="movies">movies</option>
+            <option value="web_series">web series</option>
+            <option value="drama">drama</option>
+            <option value="comedy">comedy</option>
+        </select>
+        <button onclick="">add expense</button>
+        <ul id="list"></ul>
+    </form>
+    <script>
+        const form = document.querySelector('form');
+        form.addEventListener('submit',e =>{
+            e.preventDefault();
+            let object = {
+             expense_amount :document.getElementById('expense_amount').value,
+             description  : document.getElementById("description").value,
+             category :document.getElementById('category').value
+            }
+            object_stringify = JSON.stringify(object);
+            localStorage.setItem(object.description,object_stringify);
+
+            // creating list
+            let li = document.createElement('li');
+            let ul = document.getElementById('list');
+            li.appendChild(document.createTextNode(object_stringify));
+            ul.appendChild(li);
+
+            // creating delete button
+            let deleteBtn = document.createElement("input");
+            deleteBtn.type = 'button';
+            deleteBtn.value = 'delete expense';
+            deleteBtn.id = 'deleteBtn';
+            li.appendChild(deleteBtn);
+            deleteBtn.onclick = () =>{
+                localStorage.removeItem(object.description);
+                ul.removeChild(li);
+            }
+
+            // creating edit button
+            let editBtn = document.createElement('input');
+            editBtn.type = 'button';
+            editBtn.value = 'edit expense';
+            li.appendChild(editBtn);
+            editBtn.onclick = () =>{
+                ul.removeChild(li);
+                document.getElementById('expense_amount').value = object.expense_amount;
+                document.getElementById("description").value = object.description;
+                document.getElementById('cztegory').value = object.category
+            }
+        })
+    </script>
+</body>
+</html>
